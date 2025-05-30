@@ -1,22 +1,16 @@
 <?php
 require '../helpers.php';
 
-// require basePath('views/home.view.php');
-// loadView('home');
+// Require Router script
+require basePath('Router.php');
+// Instantiate router
+$router = new Router();
+// Require available routes
+$routes = require basePath('routes.php');
 
-// Implementing a route to load views from controller
-$routes = [
-  '/' => 'controllers/home.php',
-  '/listings' => 'controllers/listings/index.php',
-  '/listings/create' => 'controllers/listings/create.php',
-  '404' => 'controllers/error/404.php'
-];
-
+// Request URI and method
 $uri = $_SERVER['REQUEST_URI'];
+$method = $_SERVER['REQUEST_METHOD'];
 
-// Check if URI exists in our route paths
-if (array_key_exists($uri, $routes)) {
-  require basePath($routes[$uri]);
-} else {
-  require basePath($routes['404']);
-}
+// Pass request args into our router and route to correct controller.
+$router->route($uri, $method);
